@@ -1,5 +1,5 @@
 # React SPA boilerplate
-Everything in this repo is meant as a boilerplate to copy when starting a new API project. Even the rest of this readme file consists of example-text.
+Everything in this repo is meant as a boilerplate to copy when starting a new SPA project. Even the rest of this readme file consists of example-text.
 
 
 ### Highlights
