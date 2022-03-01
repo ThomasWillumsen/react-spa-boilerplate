@@ -4,6 +4,7 @@ import {
   chakra,
   Container,
   Heading,
+  Spinner,
   Stack,
   Table,
   Tbody,
@@ -28,13 +29,13 @@ const Accounts = () => {
   const [updateIsOpen, setUpdateIsOpen] = React.useState(false)
   const [accountToDelete, setAccountToDelete] =
     React.useState<AccountResponse | null>(null)
-  const [accountIdToUpdate, setAccountIdToUpdate] = React.useState<number | null>(
-    null
-  )
+  const [accountIdToUpdate, setAccountIdToUpdate] = React.useState<
+    number | null
+  >(null)
 
   useRequireAuth()
   const dispatch = useAppDispatch()
-  const { accounts } = useAccounts()
+  const { accounts, status: accountsStatus } = useAccounts()
 
   const deleteClickHandler = (obj: AccountResponse) => {
     setDeleteIsOpen(true)
@@ -116,45 +117,51 @@ const Accounts = () => {
             color="green"
           />
         </Box>
-        <Table {...getTableProps()}>
-          <Thead>
-            {headerGroups.map((headerGroup) => (
-              <Tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <Th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                    {column.render('Header')}
-                    <chakra.span pl="4">
-                      {column.isSorted ? (
-                        column.isSortedDesc ? (
-                          <TriangleDownIcon aria-label="sorted descending" />
-                        ) : (
-                          <TriangleUpIcon aria-label="sorted ascending" />
-                        )
-                      ) : null}
-                    </chakra.span>
-                  </Th>
-                ))}
-              </Tr>
-            ))}
-          </Thead>
-          <Tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row)
-              return (
-                <Tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => (
-                    <Td
-                      {...cell.getCellProps()}
-                      // isNumeric={cell.column.isNumeric}
+        {accountsStatus === 'loading' ? (
+          <Spinner size="lg" />
+        ) : (
+          <Table {...getTableProps()}>
+            <Thead>
+              {headerGroups.map((headerGroup) => (
+                <Tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <Th
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
                     >
-                      {cell.render('Cell')}
-                    </Td>
+                      {column.render('Header')}
+                      <chakra.span pl="4">
+                        {column.isSorted ? (
+                          column.isSortedDesc ? (
+                            <TriangleDownIcon aria-label="sorted descending" />
+                          ) : (
+                            <TriangleUpIcon aria-label="sorted ascending" />
+                          )
+                        ) : null}
+                      </chakra.span>
+                    </Th>
                   ))}
                 </Tr>
-              )
-            })}
-          </Tbody>
-        </Table>
+              ))}
+            </Thead>
+            <Tbody {...getTableBodyProps()}>
+              {rows.map((row) => {
+                prepareRow(row)
+                return (
+                  <Tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => (
+                      <Td
+                        {...cell.getCellProps()}
+                        // isNumeric={cell.column.isNumeric}
+                      >
+                        {cell.render('Cell')}
+                      </Td>
+                    ))}
+                  </Tr>
+                )
+              })}
+            </Tbody>
+          </Table>
+        )}
       </Stack>
       <CreateAccountModal
         title="Create an account"
