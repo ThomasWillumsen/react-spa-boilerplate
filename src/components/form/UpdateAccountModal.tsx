@@ -44,9 +44,8 @@ const UpdateAccountModal = (props: Props) => {
     }
 
     setErrorMode(false)
-    dispatch(
-      UpdateAccountAsync({ id: accountToUpdate.id, body: { email, fullName } })
-    ).then(() => props.onClose())
+    dispatch(UpdateAccountAsync({ id: accountToUpdate.id, body: { email, fullName } }))
+    .then((value) => value.meta.requestStatus === "fulfilled" && props.onClose())
   }
 
   const SubmitButton = (

@@ -33,9 +33,8 @@ const CreateAccountModal = (props: Props) => {
     }
 
     setErrorMode(false)
-    dispatch(CreateAccountAsync({ email, fullName, isAdmin: false })).then(() =>
-      props.onClose()
-    )
+    dispatch(CreateAccountAsync({ email, fullName, isAdmin: false }))
+      .then((value) => value.meta.requestStatus === "fulfilled" && props.onClose())
   }
 
   const SubmitButton = (

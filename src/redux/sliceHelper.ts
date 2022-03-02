@@ -15,6 +15,7 @@ export const initialStateBase: StatusSliceBase = {
 export const handlePending = (state: StatusSliceBase) => {
     state.status = 'loading';
     state.errorMessage = null;
+    state.successMessage = null;
 }
 
 export const handleRejected = (state: StatusSliceBase, errorMessage: string) => {
